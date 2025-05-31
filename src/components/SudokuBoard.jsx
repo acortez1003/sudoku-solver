@@ -22,25 +22,37 @@ const SudokuBoard = () => {
   };
 
   const handleCellClick = (row, col) => {
-    setSelectedCell(`${row}-${col}`);
+    const cellId = `${row}-${col}`;
+    setSelectedCell(cellId);
+
     if (selectedNumber === null) return;
 
     const newGrid = grid.map(r => [...r]);
-    const cellId = `${row}-${col}`;
     const newUserInputs = new Set(userInputs);
 
-    if (newGrid[row][col] === selectedNumber.toString()) {
+    // if erase selected
+    if (selectedNumber === '') {
       newGrid[row][col] = '';
       newUserInputs.delete(cellId);
     } else {
-      newGrid[row][col] = selectedNumber.toString();
-      newUserInputs.add(cellId);
+      const currentValue = newGrid[row][col];
+      const newValue = selectedNumber.toString();
+
+      // if selected num is already place, erase
+      if (currentValue === newValue) {
+        newGrid[row][col] = '';
+        newUserInputs.delete(cellId);
+      } else {
+        newGrid[row][col] = newValue;
+        newUserInputs.add(cellId);
+      }
     }
 
     setGrid(newGrid);
     setUserInputs(newUserInputs);
     updateConflicts(newGrid, newUserInputs);
   };
+
 
   const updateConflicts = (grid, userInputs) => {
     const newConflicts = new Set();
@@ -63,17 +75,17 @@ const SudokuBoard = () => {
   const hasConflict = (grid, row, col, number) => {
     const val = number.toString();
 
-    // Check row
+    // row check
     for (let c = 0; c < 9; c++) {
       if (c !== col && grid[row][c] === val) return true;
     }
 
-    // Check column
+    // column check
     for (let r = 0; r < 9; r++) {
       if (r !== row && grid[r][col] === val) return true;
     }
 
-    // Check box
+    // box check
     const boxRow = Math.floor(row / 3) * 3;
     const boxCol = Math.floor(col / 3) * 3;
     for (let r = boxRow; r < boxRow + 3; r++) {
