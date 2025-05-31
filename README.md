@@ -1,12 +1,56 @@
-# React + Vite
+# Sudoku Solver
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web-based Sudoku Solver app built with React and Vite that lets you: - Generate Sudoku puzzles to utilize the solve tool - Automatically solve user inputted puzzles - (Future) Step-by-step hints to help solve puzzles
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    - Puzzle Generator: Quickly generate a new Sudoku puzzle
+    - Conflict Detection: While entering or editing generated puzzle, the app highlights any conflicts on the grid
+    - Solver: Solves automatically
 
-## Expanding the ESLint configuration
+## Planned Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+    - Step-by-step hints to guide solving (hidden/naked pair detection, etc.)
+
+## Getting Started
+
+### Prerequisites
+
+    - Node.js
+    - npm or yarn
+
+### Installation
+
+```bash
+git clone https://github.com/your-username/sudoku-solver.git
+cd sudoku-solver
+npm install
+```
+
+### Running Locally
+
+`npm run dev`
+Open http://localhost:5173 in your browser to see the app.
+
+## Project Structure
+
+sudoku-solver/
+├── public/
+├── src/
+│ ├── components/
+│ │ ├── NumberPad.jsx
+│ │ └── SudokuBoard.jsx
+│ ├── styles/
+│ │ ├── NumberPad.css
+│ │ └── SudokuBoard.css
+│ └── utils/
+│ ├── generator.js
+│ └── solver.js
+├── App.jsx
+├── main.jsx
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── README.md
+└── vite.config.js
