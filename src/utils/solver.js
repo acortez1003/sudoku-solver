@@ -2,13 +2,13 @@ export function solve(grid) {
   const newGrid = grid.map(row => [...row]);
 
   const isValid = (row, col, num) => {
-    // Check row and column
+    // row and column check
     for (let i = 0; i < 9; i++) {
       if (i !== col && newGrid[row][i] === num) return false;
       if (i !== row && newGrid[i][col] === num) return false;
     }
 
-    // Check 3x3 box
+    // box check
     const startRow = Math.floor(row / 3) * 3;
     const startCol = Math.floor(col / 3) * 3;
     for (let i = startRow; i < startRow + 3; i++) {
@@ -20,21 +20,21 @@ export function solve(grid) {
     return true;
   };
 
-  // Validate existing grid before solving
+  // validates grid before starting solve
   for (let row = 0; row < 9; row++) {
     for (let col = 0; col < 9; col++) {
       const val = newGrid[row][col];
       if (val !== '') {
-        newGrid[row][col] = ''; // Temporarily clear to validate properly
+        newGrid[row][col] = '';
         if (!isValid(row, col, val)) {
-          return null; // Invalid starting grid
+          return null;
         }
-        newGrid[row][col] = val; // Restore
+        newGrid[row][col] = val;
       }
     }
   }
 
-  // Start solving
+  // start solve
   const solveRecursive = () => {
     for (let row = 0; row < 9; row++) {
       for (let col = 0; col < 9; col++) {

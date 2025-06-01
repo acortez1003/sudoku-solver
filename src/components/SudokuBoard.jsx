@@ -3,6 +3,7 @@ import '../styles/SudokuBoard.css';
 import NumberPad from './NumberPad';
 import { solve } from '../utils/solver';
 import { generateSudoku } from '../utils/generator';
+import { generatePencilMarks } from '../utils/pencilMarks';
 
 const SudokuBoard = () => {
   const [grid, setGrid] = useState(Array(9).fill().map(() => Array(9).fill('')));
@@ -11,12 +12,14 @@ const SudokuBoard = () => {
   const [conflictCells, setConflictCells] = useState([]);
   const [userInputs, setUserInputs] = useState(new Set());
   const [generatedCells, setGeneratedCells] = useState(new Set());
+  const [pencilMarks, setPencilMarks] = useState({});
 
   const normalizeGrid = (grid) => grid.map(row => row.map(cell => cell === '' ? '' : cell.toString()));
 
   const handleClearBoard = () => {
     setGrid(Array(9).fill().map(() => Array(9).fill('')));
     setConflictCells([]);
+    setPencilMarks({});
     setUserInputs(new Set());
     setGeneratedCells(new Set());
   };
@@ -97,6 +100,25 @@ const SudokuBoard = () => {
     return false;
   };
 
+  const handleGenerate = () => {
+    const puzzle = generateSudoku();
+    setGrid(puzzle);
+    setConflictCells([]);
+    setPencilMarks({});
+    setUserInputs(new Set());
+
+    const newGenerated = new Set();
+    puzzle.forEach((row, rowIndex) => {
+      row.forEach((cell, colIndex) => {
+        if (cell !== '') {
+          newGenerated.add(`${rowIndex}-${colIndex}`);
+        }
+      });
+    });
+
+    setGeneratedCells(newGenerated);
+  };
+
   const handleSolve = () => {
     if (conflictCells.length > 0) {
       alert('Cannot solve: fix current conflicts first!');
@@ -113,23 +135,11 @@ const SudokuBoard = () => {
     }
   };
 
-  const handleGenerate = () => {
-    const puzzle = generateSudoku();
-    setGrid(puzzle);
-    setConflictCells([]);
-    setUserInputs(new Set());
+  const handleHint = () => {
+  const marks = generatePencilMarks(grid);
+  setPencilMarks(marks);
+};
 
-    const newGenerated = new Set();
-    puzzle.forEach((row, rowIndex) => {
-      row.forEach((cell, colIndex) => {
-        if (cell !== '') {
-          newGenerated.add(`${rowIndex}-${colIndex}`);
-        }
-      });
-    });
-
-    setGeneratedCells(newGenerated);
-  };
 
   return (
     <div className="board-wrapper">
@@ -153,7 +163,15 @@ const SudokuBoard = () => {
                   `}
                   onClick={() => handleCellClick(rowIndex, colIndex)}
                 >
-                  {value}
+                  {value || (
+  pencilMarks[cellId] && (
+    <div className="pencil-marks">
+      {pencilMarks[cellId].map((n) => (
+        <span key={n}>{n}</span>
+      ))}
+    </div>
+  )
+)}
                 </div>
               );
             })}
@@ -167,6 +185,7 @@ const SudokuBoard = () => {
         onClearBoard={handleClearBoard}
         onSolve={handleSolve}
         onGenerate={handleGenerate}
+        onHint={handleHint}
       />
     </div>
   );

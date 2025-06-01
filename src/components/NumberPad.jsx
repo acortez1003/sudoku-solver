@@ -3,7 +3,7 @@ import '../styles/NumberPad.css';
 import { FaEraser } from 'react-icons/fa';
 import { MdRestartAlt } from 'react-icons/md';
 
-const NumberPad = ({ onNumberClick, selectedNumber, onClearBoard, onSolve, onGenerate }) => {
+const NumberPad = ({ onNumberClick, selectedNumber, onClearBoard, onSolve, onGenerate, onHint }) => {
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   return (
@@ -42,6 +42,9 @@ const NumberPad = ({ onNumberClick, selectedNumber, onClearBoard, onSolve, onGen
       </button>
       <button className="solve-button" onClick={onSolve}>
         Solve
+      </button>
+      <button className="solve-button" onClick={onHint}>
+        Hint
       </button>
     </div>
   </div>

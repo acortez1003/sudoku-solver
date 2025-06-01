@@ -64,3 +64,20 @@
   background-color: #ffd6d6;
   border: 2px solid #ff4d4d;
 }
+
+.pencil-marks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  font-size: 10px;
+  color: #888;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 13px;
+}
+
+.pencil-marks span {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}

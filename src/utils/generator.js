@@ -2,7 +2,7 @@ export function createEmptyGrid() {
   return Array.from({ length: 9 }, () => Array(9).fill(''));
 }
 
-// Check if placing num is valid in grid[row][col]
+// if placing num is valid in grid[row][col] check
 function isValid(grid, row, col, num) {
   for (let i = 0; i < 9; i++) {
     if (grid[row][i] === num || grid[i][col] === num) return false;
@@ -20,7 +20,7 @@ function isValid(grid, row, col, num) {
   return true;
 }
 
-// Backtracking to fill grid
+// backtracking to fill grid
 function fillGrid(grid) {
   for (let row = 0; row < 9; row++) {
     for (let col = 0; col < 9; col++) {
@@ -40,7 +40,7 @@ function fillGrid(grid) {
   return true;
 }
 
-// Randomly remove `count` cells to make it a puzzle
+// randomly remove `count` cells to make it a puzzle
 function removeCells(grid, count = 45) {
   const newGrid = grid.map(row => [...row]);
   let removed = 0;
@@ -67,9 +67,8 @@ function shuffleArray(arr) {
   return array;
 }
 
-// Public function to generate a puzzle
 export function generateSudoku() {
   const grid = createEmptyGrid();
   fillGrid(grid);
-  return removeCells(grid, 45); // Change number for easier/harder puzzles
+  return removeCells(grid, 45);
 }
