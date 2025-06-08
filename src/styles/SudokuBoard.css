@@ -81,3 +81,25 @@
   width: 100%;
   height: 100%;
 }
+
+.pencil-marks span.hint-highlight {
+  background-color: #f1ff71;
+  border-radius: 50%;
+  height: 15px;
+  font-weight: bold;
+  color: #0057b7;
+}
+
+.pencil-marks span.hint-pair {
+  background-color: #b7e1ff;
+  border-radius: 50%;
+  font-weight: bold;
+  color: #003f7d;
+}
+
+.pencil-marks span.hint-eliminated {
+  background-color: #ffd6d6;
+  border-radius: 50%;
+  font-weight: bold;
+  color: #8b0000;
+}

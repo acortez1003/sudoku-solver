@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import '../styles/SudokuBoard.css';
 import NumberPad from './NumberPad';
+import HintBox from './HintBox';
 import { solve } from '../utils/solver';
 import { generateSudoku } from '../utils/generator';
 import { generatePencilMarks } from '../utils/pencilMarks';
+import { findHints } from '../utils/hints';
 
 const SudokuBoard = () => {
   const [grid, setGrid] = useState(Array(9).fill().map(() => Array(9).fill('')));
@@ -13,6 +15,9 @@ const SudokuBoard = () => {
   const [userInputs, setUserInputs] = useState(new Set());
   const [generatedCells, setGeneratedCells] = useState(new Set());
   const [pencilMarks, setPencilMarks] = useState({});
+  const [hints, setHints] = useState([]);
+  const [hintIndex, setHintIndex] = useState(0);
+  const currentHint = hints[hintIndex] || null;
 
   const normalizeGrid = (grid) => grid.map(row => row.map(cell => cell === '' ? '' : cell.toString()));
 
@@ -136,59 +141,136 @@ const SudokuBoard = () => {
   };
 
   const handleHint = () => {
-  const marks = generatePencilMarks(grid);
-  setPencilMarks(marks);
-};
+    const marks = generatePencilMarks(grid);
+    setPencilMarks(marks);
+
+    const possibleHints = findHints(grid, marks);
+    setHints(possibleHints);
+    setHintIndex(0);
+  };
+
+  const handleNextHint = () => {
+    setHintIndex((prev) => (prev + 1) % hints.length);
+  };
+
+  const handleApplyHint = () => {
+    if (!currentHint) return;
+
+    const newGrid = grid.map(r => [...r]);
+    const newUserInputs = new Set(userInputs);
+    let newPencilMarks = { ...pencilMarks };
+
+    if (currentHint.strategy === 'Naked Single' || currentHint.strategy === 'Hidden Single') {
+      const [row, col] = currentHint.cell.split('-').map(Number);
+      newGrid[row][col] = currentHint.number.toString();
+      newUserInputs.add(currentHint.cell);
+
+      newPencilMarks = generatePencilMarks(newGrid);
+    } else if (currentHint.strategy?.includes('Pair')) {
+      for (const cellId of currentHint.eliminatedFrom || []) {
+        const currentMarks = newPencilMarks[cellId] || [];
+        newPencilMarks[cellId] = currentMarks.filter(n => !currentHint.numbers?.includes(n));
+      }
+    }
+
+    setGrid(newGrid);
+    setUserInputs(newUserInputs);
+    setPencilMarks(newPencilMarks); // save updated marks (if removed)
+
+    const updatedHints = findHints(newGrid, newPencilMarks);
+    setHints(updatedHints);
+    setHintIndex(0);
+
+    updateConflicts(newGrid, newUserInputs);
+  };
+
+
+  function shouldHighlight(cellId, number, hint) {
+    if (!hint) return false;
+
+    const isPair = hint.strategy?.includes('Pair');
+
+    if (isPair) {
+      // pair digits in the pair cells = keep
+      if (hint.relatedCells?.includes(cellId) && hint.numbers?.includes(number)) return 'hint-pair';
+
+      // pair digits in the eliminated cells = remove
+      if (hint.eliminatedFrom?.includes(cellId) && hint.numbers?.includes(number)) return 'hint-eliminated';
+    }
+
+    if (hint.strategy === 'Naked Single' || hint.strategy === 'Hidden Single') {
+      if (hint.cell === cellId && hint.number === number) return 'hint-highlight';
+    }
+
+    return '';
+  }
 
 
   return (
-    <div className="board-wrapper">
-      <div className="sudoku-grid">
-        {grid.map((row, rowIndex) => (
-          <div key={rowIndex} className="sudoku-row">
-            {row.map((value, colIndex) => {
-              const cellId = `${rowIndex}-${colIndex}`;
-              return (
-                <div
-                  key={cellId}
-                  className={`sudoku-cell
-                    ${rowIndex % 3 === 0 ? 'border-top-bold' : ''}
-                    ${colIndex % 3 === 0 ? 'border-left-bold' : ''}
-                    ${rowIndex === 8 ? 'border-bottom-bold' : ''}
-                    ${colIndex === 8 ? 'border-right-bold' : ''}
-                    ${selectedCell === cellId ? 'active' : ''}
-                    ${conflictCells.includes(cellId) ? 'conflict' : ''}
-                    ${userInputs.has(cellId) ? 'user-input' : ''}
-                    ${generatedCells.has(cellId) ? 'generated' : ''}
-                  `}
-                  onClick={() => handleCellClick(rowIndex, colIndex)}
-                >
-                  {value || (
-  pencilMarks[cellId] && (
-    <div className="pencil-marks">
-      {pencilMarks[cellId].map((n) => (
-        <span key={n}>{n}</span>
-      ))}
-    </div>
-  )
-)}
-                </div>
-              );
-            })}
-          </div>
-        ))}
+    <div className="board-wrapper-hint">
+      <div className="board-and-controls">
+        <div className="sudoku-grid">
+          {grid.map((row, rowIndex) => (
+            <div key={rowIndex} className="sudoku-row">
+              {row.map((value, colIndex) => {
+                const cellId = `${rowIndex}-${colIndex}`;
+                return (
+                  <div
+                    key={cellId}
+                    className={`sudoku-cell
+                      ${rowIndex % 3 === 0 ? 'border-top-bold' : ''}
+                      ${colIndex % 3 === 0 ? 'border-left-bold' : ''}
+                      ${rowIndex === 8 ? 'border-bottom-bold' : ''}
+                      ${colIndex === 8 ? 'border-right-bold' : ''}
+                      ${selectedCell === cellId ? 'active' : ''}
+                      ${conflictCells.includes(cellId) ? 'conflict' : ''}
+                      ${userInputs.has(cellId) ? 'user-input' : ''}
+                      ${generatedCells.has(cellId) ? 'generated' : ''}
+                    `}
+                    onClick={() => handleCellClick(rowIndex, colIndex)}
+                  >
+                    {value || (
+                      pencilMarks[cellId] && (
+                        <div className="pencil-marks">
+                          {pencilMarks[cellId].map((n) => {
+                            const isHintMark =
+                              currentHint &&
+                              currentHint.cell === cellId &&
+                              currentHint.number === n;
+                            return (
+                              <span key={n} className={shouldHighlight(cellId, n, currentHint)}>
+                                {n}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+
+        <NumberPad
+          onNumberClick={handleNumberClick}
+          selectedNumber={selectedNumber}
+          onClearBoard={handleClearBoard}
+          onSolve={handleSolve}
+          onGenerate={handleGenerate}
+          onHint={handleHint}
+        />
       </div>
 
-      <NumberPad
-        onNumberClick={handleNumberClick}
-        selectedNumber={selectedNumber}
-        onClearBoard={handleClearBoard}
-        onSolve={handleSolve}
-        onGenerate={handleGenerate}
-        onHint={handleHint}
+      <HintBox
+        hint={currentHint}
+        onNextHint={handleNextHint}
+        onApplyHint={handleApplyHint}
       />
     </div>
   );
 };
+
 
 export default SudokuBoard;
