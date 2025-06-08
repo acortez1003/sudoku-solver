@@ -1,21 +1,15 @@
 import React from 'react';
 import '../styles/HintBox.css';
 
-const HintBox = ({ hint, onNextHint, onApplyHint }) => {
+const HintBox = ({ hint, onApplyHint, onBackHint }) => {
   return (
     <div className="hint-box">
       <h4>Hint</h4>
-      {hint ? (
-        <>
-          <p>{hint.message}</p>
-          <div className="hint-buttons">
-            <button onClick={onApplyHint}>Apply</button>
-            <button onClick={onNextHint}>Next</button>
-          </div>
-        </>
-      ) : (
-        <p>No hints available</p>
-      )}
+      <p>{hint ? hint.message : 'No hint available'}</p>
+      <div className="hint-buttons">
+        <button onClick={onApplyHint} disabled={!hint}>Apply</button>
+        <button onClick={onBackHint}>Back</button>
+      </div>
     </div>
   );
 };

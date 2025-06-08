@@ -18,6 +18,7 @@ const SudokuBoard = () => {
   const [hints, setHints] = useState([]);
   const [hintIndex, setHintIndex] = useState(0);
   const currentHint = hints[hintIndex] || null;
+  const [history, setHistory] = useState([]);
 
   const normalizeGrid = (grid) => grid.map(row => row.map(cell => cell === '' ? '' : cell.toString()));
 
@@ -27,6 +28,7 @@ const SudokuBoard = () => {
     setPencilMarks({});
     setUserInputs(new Set());
     setGeneratedCells(new Set());
+    setHistory([]);
   };
 
   const handleCellClick = (row, col) => {
@@ -111,6 +113,7 @@ const SudokuBoard = () => {
     setConflictCells([]);
     setPencilMarks({});
     setUserInputs(new Set());
+    setHistory([]);
 
     const newGenerated = new Set();
     puzzle.forEach((row, rowIndex) => {
@@ -149,12 +152,14 @@ const SudokuBoard = () => {
     setHintIndex(0);
   };
 
-  const handleNextHint = () => {
-    setHintIndex((prev) => (prev + 1) % hints.length);
-  };
-
   const handleApplyHint = () => {
     if (!currentHint) return;
+
+    setHistory(prev => [...prev, {
+      grid: grid.map(r => [...r]),
+      userInputs: new Set(userInputs),
+      pencilMarks: JSON.parse(JSON.stringify(pencilMarks)),
+    }]);
 
     const newGrid = grid.map(r => [...r]);
     const newUserInputs = new Set(userInputs);
@@ -182,6 +187,24 @@ const SudokuBoard = () => {
     setHintIndex(0);
 
     updateConflicts(newGrid, newUserInputs);
+  };
+
+  const handleBackHint = () => {
+    if (history.length === 0) return;
+
+    const prevState = history[history.length - 1];
+    setGrid(prevState.grid);
+    setUserInputs(prevState.userInputs);
+    setPencilMarks(prevState.pencilMarks);
+    updateConflicts(prevState.grid, prevState.userInputs);
+
+    // regenerate hints based on previous state
+    const updatedHints = findHints(prevState.grid, prevState.pencilMarks);
+    setHints(updatedHints);
+    setHintIndex(0);
+
+    // remove that last state
+    setHistory(prev => prev.slice(0, -1));
   };
 
 
@@ -265,8 +288,8 @@ const SudokuBoard = () => {
 
       <HintBox
         hint={currentHint}
-        onNextHint={handleNextHint}
         onApplyHint={handleApplyHint}
+        onBackHint={handleBackHint}
       />
     </div>
   );
