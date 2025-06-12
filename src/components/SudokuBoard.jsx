@@ -290,6 +290,7 @@ const SudokuBoard = () => {
         hint={currentHint}
         onApplyHint={handleApplyHint}
         onBackHint={handleBackHint}
+        canGoBack={history.length > 0}
       />
     </div>
   );
