@@ -15,6 +15,7 @@ const SudokuBoard = () => {
   const [userInputs, setUserInputs] = useState(new Set());
   const [generatedCells, setGeneratedCells] = useState(new Set());
   const [pencilMarks, setPencilMarks] = useState({});
+  const [showHintBox, setShowHintBox] = useState(false);
   const [hints, setHints] = useState([]);
   const [hintIndex, setHintIndex] = useState(0);
   const currentHint = hints[hintIndex] || null;
@@ -29,6 +30,7 @@ const SudokuBoard = () => {
     setUserInputs(new Set());
     setGeneratedCells(new Set());
     setHistory([]);
+    setShowHintBox(false);
   };
 
   const handleCellClick = (row, col) => {
@@ -114,6 +116,7 @@ const SudokuBoard = () => {
     setPencilMarks({});
     setUserInputs(new Set());
     setHistory([]);
+    setShowHintBox(false);
 
     const newGenerated = new Set();
     puzzle.forEach((row, rowIndex) => {
@@ -128,6 +131,7 @@ const SudokuBoard = () => {
   };
 
   const handleSolve = () => {
+    setShowHintBox(false);
     if (conflictCells.length > 0) {
       alert('Cannot solve: fix current conflicts first!');
       return;
@@ -144,12 +148,19 @@ const SudokuBoard = () => {
   };
 
   const handleHint = () => {
+    if (showHintBox) {
+      setShowHintBox(false);
+      setPencilMarks({});
+      return;
+    }
+
     const marks = generatePencilMarks(grid);
     setPencilMarks(marks);
 
     const possibleHints = findHints(grid, marks);
     setHints(possibleHints);
     setHintIndex(0);
+    setShowHintBox(true);
   };
 
   const handleApplyHint = () => {
@@ -286,12 +297,14 @@ const SudokuBoard = () => {
         />
       </div>
 
-      <HintBox
-        hint={currentHint}
-        onApplyHint={handleApplyHint}
-        onBackHint={handleBackHint}
-        canGoBack={history.length > 0}
-      />
+      {showHintBox && (
+        <HintBox
+          hint={currentHint}
+          onApplyHint={handleApplyHint}
+          onBackHint={handleBackHint}
+          canGoBack={history.length > 0}
+        />
+      )}
     </div>
   );
 };
