@@ -3,7 +3,7 @@
 A web-based Sudoku Solver app built with React and Vite that lets you:
 - Generate Sudoku puzzles to utilize the solve tool
 - Automatically solve user-inputted puzzles
-- (Future) Step-by-step hints to help solve puzzles
+- Step-by-step hints to help solve puzzles
 
 ## Features
 
