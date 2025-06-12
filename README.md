@@ -9,11 +9,8 @@ A web-based Sudoku Solver app built with React and Vite that lets you:
 
 - **Puzzle Generator**: Quickly generate a new Sudoku puzzle  
 - **Conflict Detection**: Highlights any conflicts while entering or editing puzzles  
-- **Solver**: Instantly solves a valid puzzle  
-
-## Planned Features
-
-- Step-by-step hints to guide solving (e.g., naked/hidden pairs)
+- **Solver**: Instantly solves a valid puzzle
+- **Hints**: Step-by-step hints to guide solving (e.g., naked/hidden pairs)
 
 ## Getting Started
 
@@ -39,13 +36,17 @@ sudoku-solver/
 ├── public/
 ├── src/
 │   ├── components/
+│   │   ├── HintBox.jsx
 │   │   ├── NumberPad.jsx
 │   │   └── SudokuBoard.jsx
 │   ├── styles/
+│   │   ├── HintBox.css
 │   │   ├── NumberPad.css
 │   │   └── SudokuBoard.css
 │   └── utils/
 │       ├── generator.js
+│       ├── hints.js
+│       ├── pencilMarks.js
 │       └── solver.js
 ├── App.jsx
 ├── main.jsx
