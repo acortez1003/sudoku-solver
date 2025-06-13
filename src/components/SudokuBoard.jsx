@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/SudokuBoard.css';
 import NumberPad from './NumberPad';
 import HintBox from './HintBox';
@@ -59,6 +59,12 @@ const SudokuBoard = () => {
         newUserInputs.add(cellId);
       }
     }
+
+    setHistory(prev => [...prev, {
+      grid: grid.map(r => [...r]),
+      userInputs: new Set(userInputs),
+      pencilMarks: JSON.parse(JSON.stringify(pencilMarks)),
+    }]);
 
     setGrid(newGrid);
     setUserInputs(newUserInputs);
@@ -218,7 +224,6 @@ const SudokuBoard = () => {
     setHistory(prev => prev.slice(0, -1));
   };
 
-
   function shouldHighlight(cellId, number, hint) {
     if (!hint) return false;
 
@@ -238,6 +243,18 @@ const SudokuBoard = () => {
 
     return '';
   }
+
+  useEffect(() => {
+    if (!showHintBox) return;
+
+    const updatedPencilMarks = generatePencilMarks(grid);
+    const updatedHints = findHints(grid, updatedPencilMarks);
+
+    setHints(updatedHints);
+    setHintIndex(0);
+    setPencilMarks(updatedPencilMarks);
+  }, [grid, showHintBox]);
+
 
 
   return (
