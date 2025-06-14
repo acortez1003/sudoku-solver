@@ -27,8 +27,10 @@ cd sudoku-solver
 npm install
 ```
 ### Running locally
-```npm run dev```
-Then open http://localhost:5173 in your browser.
+```bash
+npm run dev
+```
+And open http://localhost:5173 in your browser.
 
 ## Project Structure
 ```bash
