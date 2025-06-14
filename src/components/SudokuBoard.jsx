@@ -160,6 +160,17 @@ const SudokuBoard = () => {
       return;
     }
 
+    const numFilledCells = grid.flat().filter(cell => cell !== '').length;
+    if (numFilledCells < 10) {
+      alert('Please fill at least 10 cells before using a Hint.');
+      return;
+    }
+
+    if (conflictCells.length > 0) {
+      alert('Please fix current conflicts before using a Hint');
+      return;
+    }
+
     const marks = generatePencilMarks(grid);
     setPencilMarks(marks);
 
