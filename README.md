@@ -50,6 +50,7 @@ sudoku-solver/
 │       ├── hints.js
 │       ├── pencilMarks.js
 │       └── solver.js
+├── App.css
 ├── App.jsx
 ├── main.jsx
 ├── eslint.config.js
