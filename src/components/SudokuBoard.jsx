@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles/SudokuBoard.css';
 import NumberPad from './NumberPad';
 import HintBox from './HintBox';
@@ -20,7 +20,7 @@ const SudokuBoard = () => {
   const [hintIndex, setHintIndex] = useState(0);
   const currentHint = hints[hintIndex] || null;
   const [history, setHistory] = useState([]);
-
+  const skipNextEffect = useRef(false);
   const normalizeGrid = (grid) => grid.map(row => row.map(cell => cell === '' ? '' : cell.toString()));
 
   const handleClearBoard = () => {
@@ -202,7 +202,7 @@ const SudokuBoard = () => {
     const updatedHints = findHints(newGrid, newPencilMarks);
     setHints(updatedHints);
     setHintIndex(0);
-
+    skipNextEffect.current = true;
     updateConflicts(newGrid, newUserInputs);
   };
 
@@ -210,9 +210,9 @@ const SudokuBoard = () => {
     if (history.length === 0) return;
 
     const prevState = history[history.length - 1];
-    setGrid(prevState.grid);
-    setUserInputs(prevState.userInputs);
-    setPencilMarks(prevState.pencilMarks);
+    setGrid(prevState.grid.map(r => [...r]));
+    setUserInputs(new Set(prevState.userInputs));
+    setPencilMarks(JSON.parse(JSON.stringify(prevState.pencilMarks)));
     updateConflicts(prevState.grid, prevState.userInputs);
 
     // regenerate hints based on previous state
@@ -246,16 +246,18 @@ const SudokuBoard = () => {
 
   useEffect(() => {
     if (!showHintBox) return;
-
+    if (skipNextEffect.current) {
+      skipNextEffect.current = false;
+      return;
+    }
+  
     const updatedPencilMarks = generatePencilMarks(grid);
     const updatedHints = findHints(grid, updatedPencilMarks);
-
+  
     setHints(updatedHints);
     setHintIndex(0);
     setPencilMarks(updatedPencilMarks);
   }, [grid, showHintBox]);
-
-
 
   return (
     <div className="board-wrapper-hint">
