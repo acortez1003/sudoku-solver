@@ -46,6 +46,9 @@ const SudokuBoard = () => {
     if (selectedNumber === '') {
       newGrid[row][col] = '';
       newUserInputs.delete(cellId);
+      const newGeneratedCells = new Set(generatedCells);
+      newGeneratedCells.delete(cellId);
+      setGeneratedCells(newGeneratedCells);
     } else {
       const currentValue = newGrid[row][col];
       const newValue = selectedNumber.toString();

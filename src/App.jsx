@@ -5,8 +5,8 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>Sudoku Solver</h1>
-        <p>Enter or generate a puzzle for step-by-step hints or instantly solve</p>
+        <h1><u>Sudoku Solver</u></h1>
+        <p>Enter or generate a random puzzle | Auto-solve or use hints to learn strategies</p>
       </header>
 
       <main>
