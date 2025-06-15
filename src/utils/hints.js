@@ -9,7 +9,7 @@ export const findHints = (grid, pencilMarks) => {
           strategy: 'Naked Single',
           cell: id,
           number: pencilMarks[id][0],
-          message: `Naked Single: Cell (${row + 1}, ${col + 1}) can only be ${pencilMarks[id][0]}`
+          message: `Naked Single: Cell (${col + 1}, ${row + 1}) can only be ${pencilMarks[id][0]}`
         }];
       }
     }
@@ -37,7 +37,7 @@ export const findHints = (grid, pencilMarks) => {
           strategy: 'Hidden Single',
           cell: onlyCell,
           number: num,
-          message: `Hidden Single: Only cell in unit can be ${num} at ${onlyCell}`
+          message: `Hidden Single: Cell ${onlyCell} is the only cell in the unit that can be ${num}`
         }];
       }
     }

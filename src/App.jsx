@@ -5,7 +5,10 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1><u>Sudoku Solver</u></h1>
+        <h1>
+        <img src="/sudoku.png" alt="Sudoku Logo" className="header-logo" />
+          <u>Sudoku Solver</u>
+        </h1>
         <p>Enter or generate a random puzzle | Auto-solve or use hints to learn strategies</p>
       </header>
 
@@ -15,7 +18,7 @@ function App() {
 
       <footer>
         <p>
-          Built by <a href="https://github.com/acortez1003" target="_blank" rel="noopener noreferrer">acortez1003</a> • 
+          Built by <a href="https://acortez1003.github.io/" target="_blank" rel="noopener noreferrer">acortez1003</a> • 
           <a href="https://github.com/acortez1003/sudoku-solver" target="_blank" rel="noopener noreferrer"> View source on GitHub</a>
         </p>
       </footer>
