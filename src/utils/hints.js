@@ -37,7 +37,7 @@ export const findHints = (grid, pencilMarks) => {
           strategy: 'Hidden Single',
           cell: onlyCell,
           number: num,
-          message: `Hidden Single: Cell ${onlyCell} is the only cell in the unit that can be ${num}`
+          message: `Hidden Single: Cell ${formatCell(onlyCell)} is the only cell in the unit that can be ${num}`
         }];
       }
     }
@@ -79,7 +79,7 @@ export const findHints = (grid, pencilMarks) => {
             numbers: pairNums,
             eliminatedNumbers: allOtherNumbers(pairNums),
             eliminatedFrom,
-            message: `Naked Pair: Cells ${cells.join(' and ')} contain only ${pairNums.join(', ')} — eliminate from others in unit`
+            message: `Naked Pair: Cells ${cells.map(formatCell).join(' and ')} contain only ${pairNums.join(', ')} — eliminate from others in unit`
             }];
         }
         }
@@ -126,7 +126,7 @@ export const findHints = (grid, pencilMarks) => {
                 numbers: [a, b],
                 eliminatedNumbers: allOtherNumbers(pairNums),
                 eliminatedFrom,
-                message: `Hidden Pair: Only cells ${targetCells.join(' and ')} can contain ${a}, ${b} — eliminate other candidates from those cells`
+                message: `Hidden Pair: Only cells ${targetCells.map(formatCell).join(' and ')} can contain ${a}, ${b} — eliminate other candidates from those cells`
             }];
             }
         }
@@ -177,4 +177,9 @@ function gridCell(grid, id) {
 
 function allOtherNumbers(keep) {
   return Array.from({ length: 9 }, (_, i) => i + 1).filter(n => !keep.includes(n));
+}
+
+function formatCell(id) {
+  const [r, c] = id.split('-').map(Number);
+  return `(${c + 1}, ${r + 1})`;
 }
