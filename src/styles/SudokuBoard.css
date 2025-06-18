@@ -48,6 +48,11 @@
   background-color: #eaf4ff;
 }
 
+.sudoku-cell.highlight-same-number,
+.sudoku-cell.user-input.highlight-same-number {
+  background-color: #b9ebd2;
+}
+
 .generated,
 .sudoku-cell.user-input {
   background-color: #e8e8e8;

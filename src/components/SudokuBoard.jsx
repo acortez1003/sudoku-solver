@@ -11,6 +11,7 @@ const SudokuBoard = () => {
   const [grid, setGrid] = useState(Array(9).fill().map(() => Array(9).fill('')));
   const [selectedNumber, setSelectedNumber] = useState(null);
   const [selectedCell, setSelectedCell] = useState(null);
+  const [highlightedCells, setHighlightedCells] = useState(new Set());
   const [conflictCells, setConflictCells] = useState([]);
   const [userInputs, setUserInputs] = useState(new Set());
   const [generatedCells, setGeneratedCells] = useState(new Set());
@@ -26,6 +27,7 @@ const SudokuBoard = () => {
   const handleClearBoard = () => {
     setGrid(Array(9).fill().map(() => Array(9).fill('')));
     setConflictCells([]);
+    setHighlightedCells(new Set());
     setPencilMarks({});
     setUserInputs(new Set());
     setGeneratedCells(new Set());
@@ -33,9 +35,26 @@ const SudokuBoard = () => {
     setShowHintBox(false);
   };
 
+  const getCellsWithSameValue = (value) => {
+    const matches = new Set();
+    if (value !== '') {
+      grid.forEach((r, rIdx) => {
+        r.forEach((cellVal, cIdx) => {
+          if (cellVal === value) {
+            matches.add(`${rIdx}-${cIdx}`);
+          }
+        });
+      });
+    }
+    return matches;
+  };
+
   const handleCellClick = (row, col) => {
     const cellId = `${row}-${col}`;
     setSelectedCell(cellId);
+    
+    const value = grid[row][col];
+    setHighlightedCells(getCellsWithSameValue(value));
 
     if (selectedNumber === null) return;
 
@@ -72,6 +91,8 @@ const SudokuBoard = () => {
     setGrid(newGrid);
     setUserInputs(newUserInputs);
     updateConflicts(newGrid, newUserInputs);
+    const newValue = newGrid[row][col];
+    setHighlightedCells(getCellsWithSameValue(newValue));
   };
 
 
@@ -122,6 +143,7 @@ const SudokuBoard = () => {
     const puzzle = generateSudoku();
     setGrid(puzzle);
     setConflictCells([]);
+    setHighlightedCells(new Set());
     setPencilMarks({});
     setUserInputs(new Set());
     setHistory([]);
@@ -290,6 +312,7 @@ const SudokuBoard = () => {
                       ${rowIndex === 8 ? 'border-bottom-bold' : ''}
                       ${colIndex === 8 ? 'border-right-bold' : ''}
                       ${selectedCell === cellId ? 'active' : ''}
+                      ${highlightedCells.has(cellId) ? 'highlight-same-number' : ''}
                       ${conflictCells.includes(cellId) ? 'conflict' : ''}
                       ${userInputs.has(cellId) ? 'user-input' : ''}
                       ${generatedCells.has(cellId) ? 'generated' : ''}
