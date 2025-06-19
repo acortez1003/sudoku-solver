@@ -19,7 +19,8 @@ function App() {
       <footer>
         <p>
           Built by <a href="https://acortez1003.github.io/" target="_blank" rel="noopener noreferrer">acortez1003</a> • 
-          <a href="https://github.com/acortez1003/sudoku-solver" target="_blank" rel="noopener noreferrer"> View source on GitHub</a>
+          <img src="/github-mark.png" alt="GitHub Logo" className="github-logo" />
+          <a href="https://github.com/acortez1003/sudoku-solver"><i class="fab fa-github"></i>GitHub</a>
         </p>
       </footer>
     </div>

@@ -35,6 +35,12 @@ header h1 {
   margin-bottom: 0.5rem;
 }
 
+.github-logo {
+  width: 25px;
+  height: auto;
+  margin: 0 0.3rem 0.2rem 0.4rem;
+}
+
 footer {
   margin-top: 3rem;
   padding: 1rem;

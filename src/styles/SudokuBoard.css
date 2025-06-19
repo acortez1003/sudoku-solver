@@ -68,7 +68,7 @@
 
 .sudoku-cell.highlight-same-number,
 .sudoku-cell.user-input.highlight-same-number {
-  background-color: #8fddb6;
+  background-color: #8fddb6b6;
 }
 
 .generated,
