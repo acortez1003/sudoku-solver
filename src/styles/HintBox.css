@@ -1,6 +1,6 @@
 .hint-box {
-  flex-shrink: 0;
-  width: 240px;
+  flex-shrink: 2;
+  flex-basis: 240px;
   margin-top: 100px;
   border: 2px solid #ccc;
   padding: 15px;
@@ -9,7 +9,6 @@
   font-family: sans-serif;
   box-sizing: border-box;
 }
-
 
 .hint-buttons {
   margin-top: 10px;

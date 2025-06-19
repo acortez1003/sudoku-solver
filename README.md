@@ -1,4 +1,4 @@
-# Sudoku Solver
+# ![Logo](/public/sudoku.png) Sudoku Solver
 
 A web-based Sudoku Solver app built with React and Vite that lets you:
 - Generate Sudoku puzzles to utilize the solve tool
@@ -6,6 +6,10 @@ A web-based Sudoku Solver app built with React and Vite that lets you:
 - Step-by-step hints to help solve puzzles
 
 ![Sudoku Solver](/public/sudoku_solver.png)
+
+## Live Demo
+You can try the app here:
+👉 [https://sudoku-solver-acortez.vercel.app/](https://sudoku-solver-acortez.vercel.app/)
 
 ## Features
 
@@ -24,7 +28,7 @@ A web-based Sudoku Solver app built with React and Vite that lets you:
 ### Installation
 
 ```bash
-git clone https://github.com/your-username/sudoku-solver.git
+git clone https://github.com/acortez1003/sudoku-solver.git
 cd sudoku-solver
 npm install
 ```
@@ -42,7 +46,8 @@ sudoku-solver/
 │   ├── components/
 │   │   ├── HintBox.jsx
 │   │   ├── NumberPad.jsx
-│   │   └── SudokuBoard.jsx
+│   │   ├── SudokuBoard.jsx
+│   │   └── SudokuCell.jsx
 │   ├── styles/
 │   │   ├── HintBox.css
 │   │   ├── NumberPad.css
