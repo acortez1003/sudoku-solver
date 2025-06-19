@@ -3,7 +3,6 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  gap: 20px;
   flex-wrap: wrap;
   padding: 1rem;
   box-sizing: border-box;
@@ -68,7 +67,7 @@
 
 .sudoku-cell.highlight-same-number,
 .sudoku-cell.user-input.highlight-same-number {
-  background-color: #8fddb6b6;
+  background-color: #8fddb6a2;
 }
 
 .generated,
@@ -129,6 +128,7 @@
   border-radius: 50%;
   font-weight: bold;
   color: #003f7d;
+  height: 1.2em;
 }
 
 .pencil-marks span.hint-eliminated {
@@ -136,4 +136,5 @@
   border-radius: 50%;
   font-weight: bold;
   color: #8b0000;
+  height: 1.2em;
 }
