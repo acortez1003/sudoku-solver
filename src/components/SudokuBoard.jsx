@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/SudokuBoard.css';
+import SudokuCell from './SudokuCell';
 import NumberPad from './NumberPad';
 import HintBox from './HintBox';
 import { solve } from '../utils/solver';
@@ -304,39 +305,22 @@ const SudokuBoard = () => {
               {row.map((value, colIndex) => {
                 const cellId = `${rowIndex}-${colIndex}`;
                 return (
-                  <div
+                  <SudokuCell
                     key={cellId}
-                    className={`sudoku-cell
-                      ${rowIndex % 3 === 0 ? 'border-top-bold' : ''}
-                      ${colIndex % 3 === 0 ? 'border-left-bold' : ''}
-                      ${rowIndex === 8 ? 'border-bottom-bold' : ''}
-                      ${colIndex === 8 ? 'border-right-bold' : ''}
-                      ${selectedCell === cellId ? 'active' : ''}
-                      ${highlightedCells.has(cellId) ? 'highlight-same-number' : ''}
-                      ${conflictCells.includes(cellId) ? 'conflict' : ''}
-                      ${userInputs.has(cellId) ? 'user-input' : ''}
-                      ${generatedCells.has(cellId) ? 'generated' : ''}
-                    `}
+                    rowIndex={rowIndex}
+                    colIndex={colIndex}
+                    value={value}
+                    cellId={cellId}
+                    selectedCell={selectedCell}
+                    highlightedCells={highlightedCells}
+                    conflictCells={conflictCells}
+                    userInputs={userInputs}
+                    generatedCells={generatedCells}
+                    pencilMarks={pencilMarks}
+                    currentHint={currentHint}
+                    shouldHighlight={shouldHighlight}
                     onClick={() => handleCellClick(rowIndex, colIndex)}
-                  >
-                    {value || (
-                      pencilMarks[cellId] && (
-                        <div className="pencil-marks">
-                          {pencilMarks[cellId].map((n) => {
-                            const isHintMark =
-                              currentHint &&
-                              currentHint.cell === cellId &&
-                              currentHint.number === n;
-                            return (
-                              <span key={n} className={shouldHighlight(cellId, n, currentHint)}>
-                                {n}
-                              </span>
-                            );
-                          })}
-                        </div>
-                      )
-                    )}
-                  </div>
+                  />
                 );
               })}
             </div>

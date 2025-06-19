@@ -4,42 +4,60 @@
   justify-content: center;
   align-items: flex-start;
   gap: 20px;
+  flex-wrap: wrap;
+  padding: 1rem;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .board-and-controls {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1 1 320px;
+  max-width: 550px;
+  box-sizing: border-box;
 }
-
 
 .sudoku-grid {
   display: flex;
+  font-size: 0;
   flex-direction: column;
+  overflow: hidden;
   border: 3px solid #000;
   background: #fcfcfc;
-  margin-top: 50px;
-  margin-bottom: 20px;
+  margin: 2rem 0 1rem 0;
+  width: 100%;
+  aspect-ratio: 1 / 1; 
+  max-width: 360px;
+  box-sizing: border-box;
 }
 
 .sudoku-row {
   display: flex;
+  flex: 1 1 0;
 }
 
 .sudoku-cell {
-  width: 40px;
-  height: 40px;
+  flex: 1 1 0; 
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  aspect-ratio: 1 / 0.98;
   border: 1px solid #888;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
+  font-size: clamp(14px, 4vw, 20px);
   cursor: pointer;
+  box-sizing: border-box;
 }
+
 
 .sudoku-cell.selected {
   background-color: #e0f7ff;
-  border: 2px solid #2196f3;
+  outline: 2px solid #2196f3;
+  outline-offset: -2px; 
 }
 
 .sudoku-cell.active {
@@ -50,13 +68,19 @@
 
 .sudoku-cell.highlight-same-number,
 .sudoku-cell.user-input.highlight-same-number {
-  background-color: #b9ebd2;
+  background-color: #8fddb6;
 }
 
 .generated,
 .sudoku-cell.user-input {
   background-color: #e8e8e8;
   font-weight: bold;
+}
+
+.sudoku-cell.conflict {
+  background-color: #ffd6d6;
+  outline: 2px solid #ff4d4d;
+  outline-offset: -2px;
 }
 
 .border-top-bold {
@@ -75,20 +99,15 @@
   border-right: 2px solid #000;
 }
 
-.sudoku-cell.conflict {
-  background-color: #ffd6d6;
-  border: 2px solid #ff4d4d;
-}
-
 .pencil-marks {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  font-size: 10px;
+  font-size: clamp(8px, 2.5vw, 10px);
   color: #888;
   width: 100%;
   height: 100%;
   text-align: center;
-  line-height: 13px;
+  line-height: 1.2;
 }
 
 .pencil-marks span {
@@ -100,9 +119,9 @@
 .pencil-marks span.hint-highlight {
   background-color: #f1ff71;
   border-radius: 50%;
-  height: 15px;
   font-weight: bold;
   color: #0057b7;
+  height: 1.2em;
 }
 
 .pencil-marks span.hint-pair {

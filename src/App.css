@@ -1,6 +1,18 @@
 .App {
   background-color: #b1f0d1;
+  overflow: auto;
+  min-height: 100vh;
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
 
 header {
   text-align: center;
@@ -24,7 +36,7 @@ header h1 {
 }
 
 footer {
-  margin-top: 2rem;
+  margin-top: 3rem;
   padding: 1rem;
   box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
   background-color: #C8FFE4;
