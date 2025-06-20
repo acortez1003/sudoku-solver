@@ -1,4 +1,4 @@
-# ![Logo](/public/sudoku.png) Sudoku Solver
+<h1><img src="/public/sudoku.png" alt="Logo" height="32" style="vertical-align: middle;"> Sudoku Solver</h1>
 
 A web-based Sudoku Solver app built with React and Vite that lets you:
 - Generate Sudoku puzzles to utilize the solve tool
