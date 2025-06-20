@@ -59,3 +59,27 @@ footer a {
 footer a:hover {
   text-decoration: underline;
 }
+
+@media (max-width: 600px) {
+  header {
+    text-align: center;
+    padding: 0.2rem 0 0.2rem 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 0.5rem;
+    background-color: #C8FFE4;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  header h1 {
+    margin: 0;
+    padding: 0 0 0.2rem 0;
+    font-size: 1rem;
+    color: #010938;
+  }
+
+  .header-logo {
+    width: 30px;
+    height: auto;
+    margin-bottom: 0.2rem;
+  }
+}

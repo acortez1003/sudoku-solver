@@ -62,7 +62,7 @@
 }
 
 .num-button.selected {
-  background-color: #d0ebff;
+  background: linear-gradient(to bottom, #f5f5f5, #dddddd);
   border: 2px solid #2196f3;
 }
 
