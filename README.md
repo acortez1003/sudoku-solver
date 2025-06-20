@@ -17,6 +17,8 @@ You can try the app here:
 - **Conflict Detection**: Highlights any conflicts while entering or editing puzzles  
 - **Solver**: Instantly solves a valid puzzle
 - **Hints**: Step-by-step hints to guide solving (e.g., naked/hidden pairs)
+- **Pencil Marks**: Generates pencil markings and dynamically updates
+- **Undo System**: Tracks move history to revert changes with Back button
 
 ## Getting Started
 
